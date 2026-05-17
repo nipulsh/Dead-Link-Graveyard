@@ -9,7 +9,7 @@ const Header = () => {
   ];
 
   return (
-    <div className="flex justify-between items-center border py-5 mx-4 px-10 mt-4 shadow-[-2px_-2px_6px_rgba(255,255,255,0.05)]">
+    <div className="flex justify-between items-center mx-4 mt-2 px-10">
       <div>
         <div className="flex justify-between items-center gap-2">
           <span className="text-sm">Crawl Status</span>
@@ -25,7 +25,7 @@ const Header = () => {
           return (
             <div
               key={index}
-              className="w-[10vw] flex flex-col gap-2 items-baseline border rounded-sm border-black py-5 px-2"
+              className="w-[10vw] flex flex-col gap-2 items-baseline rounded-sm border-black px-2"
             >
               <div className="text-[12px]">{field}</div>
               <div>data</div>

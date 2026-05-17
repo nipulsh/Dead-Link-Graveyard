@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import {
   ReactFlow,
+  Controls,
   applyNodeChanges,
   applyEdgeChanges,
   addEdge,
@@ -35,7 +36,7 @@ export default function Canvas() {
   );
 
   return (
-    <div style={{ width: "100vw", height: "100vh" }}>
+    <div className="h-full w-full min-h-0">
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -43,7 +44,10 @@ export default function Canvas() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
-      />
+        className="canvas-react-flow"
+      >
+        <Controls position="bottom-left" className="canvas-flow-controls" />
+      </ReactFlow>
     </div>
   );
 }

@@ -1,21 +1,18 @@
 import Graph from "@/components/crawl/Graph";
 import Header from "@/components/crawl/Header";
 import Navbar from "@/components/crawl/Navbar";
-import React from "react";
 
 const page = () => {
   return (
-    <div className="bg-[#FEFEFE] h-screen">
-      <div className="flex flex-col">
-        <div className="flex-1">
-          <Navbar />
-        </div>
-        <div className="flex-2">
-          <Header />
-        </div>
-        <div className="flex-5">
-          <Graph />
-        </div>
+    <div className="flex h-screen min-h-0 flex-col bg-[#FEFEFE]">
+      <div className="min-h-0 flex-1 overflow-auto">
+        <Navbar />
+      </div>
+      <div className="min-h-0 flex-[1] overflow-auto">
+        <Header />
+      </div>
+      <div className="min-h-0 flex-[9] overflow-hidden">
+        <Graph />
       </div>
     </div>
   );

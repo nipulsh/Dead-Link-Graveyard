@@ -133,3 +133,12 @@
     @apply font-heading;
   }
 }
+
+/* Crawl canvas: flow controls tucked into bottom-left */
+.canvas-react-flow .canvas-flow-controls {
+  margin: 12px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  box-shadow: none;
+  overflow: hidden;
+}

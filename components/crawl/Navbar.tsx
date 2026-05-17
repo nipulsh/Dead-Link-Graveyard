@@ -4,9 +4,9 @@ import React from "react";
 
 const Navbar = () => {
   return (
-    <div className="flex justify-between items-center px-10">
+    <div className="flex justify-between items-center px-10 h-full">
       <div className="flex justify-center items-center">
-        <Image src="/favicon.png" alt="logo" width={70} height={70} />
+        <Image src="/favicon.png" alt="logo" width={50} height={50} />
         <div className="text-bold flex gap-1 text-xl">
           <span className="capitalize">dead link</span>
           <span className="capitalize text-[#248D32] font-(family-name: 'Roboto')">
