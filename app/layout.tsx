@@ -1,15 +1,48 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const fontBundle = "../public/fonts/Abhaya_Libre,Cinzel,Roboto,Roboto_Mono";
+
+const roboto = localFont({
+  src: [
+    {
+      path: "../public/fonts/roboto/Roboto-VariableFont_wdth,wght.ttf",
+      style: "normal",
+      weight: "100 900",
+    },
+    {
+      path: "../public/fonts/roboto/Roboto-Italic-VariableFont_wdth,wght.ttf",
+      style: "italic",
+      weight: "100 900",
+    },
+  ],
+  variable: "--font-roboto",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const cinzel = localFont({
+  src: `${fontBundle}/Cinzel/Cinzel-VariableFont_wght.ttf`,
+  variable: "--font-cinzel",
+  display: "swap",
+  weight: "400 900",
+});
+
+const robotoMono = localFont({
+  src: [
+    {
+      path: `${fontBundle}/Roboto_Mono/RobotoMono-VariableFont_wght.ttf`,
+      style: "normal",
+      weight: "100 700",
+    },
+    {
+      path: `${fontBundle}/Roboto_Mono/RobotoMono-Italic-VariableFont_wght.ttf`,
+      style: "italic",
+      weight: "100 700",
+    },
+  ],
+  variable: "--font-roboto-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${roboto.variable} ${cinzel.variable} ${robotoMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
