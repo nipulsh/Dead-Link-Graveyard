@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
+import { Cinzel, Roboto_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
-
-const fontBundle = "../public/fonts/Abhaya_Libre,Cinzel,Roboto,Roboto_Mono";
 
 const roboto = localFont({
   src: [
@@ -21,28 +20,15 @@ const roboto = localFont({
   display: "swap",
 });
 
-const cinzel = localFont({
-  src: `${fontBundle}/Cinzel/Cinzel-VariableFont_wght.ttf`,
+const cinzel = Cinzel({
   variable: "--font-cinzel",
-  display: "swap",
-  weight: "400 900",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
 });
 
-const robotoMono = localFont({
-  src: [
-    {
-      path: `${fontBundle}/Roboto_Mono/RobotoMono-VariableFont_wght.ttf`,
-      style: "normal",
-      weight: "100 700",
-    },
-    {
-      path: `${fontBundle}/Roboto_Mono/RobotoMono-Italic-VariableFont_wght.ttf`,
-      style: "italic",
-      weight: "100 700",
-    },
-  ],
+const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
-  display: "swap",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
@@ -60,7 +46,7 @@ export default function RootLayout({
       lang="en"
       className={`${roboto.variable} ${cinzel.variable} ${robotoMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );
 }
