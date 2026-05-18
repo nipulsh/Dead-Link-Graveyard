@@ -17,6 +17,8 @@
 /.next/
 /out/
 
+/project.md
+
 # production
 /build
 
