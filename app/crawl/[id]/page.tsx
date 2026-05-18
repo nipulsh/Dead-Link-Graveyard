@@ -4,7 +4,6 @@ import Graph from "@/components/crawl/Graph";
 import Header from "@/components/crawl/Header";
 import Navbar from "@/components/crawl/Navbar";
 import { clearPendingCrawl, isPendingCrawl } from "@/lib/crawl-session-flag";
-import { missingRealtimeBackendOnVercel } from "@/lib/public-runtime";
 import { getSocket } from "@/lib/socket-client";
 import { SOCKET_EVENTS } from "@/types/socket-events";
 import type {
@@ -24,16 +23,6 @@ export default function CrawlDashboardPage() {
 
   useEffect(() => {
     if (!id) return;
-
-    if (missingRealtimeBackendOnVercel()) {
-      clearPendingCrawl();
-      useCrawlStore
-        .getState()
-        .applyError(
-          "Live crawl is not available on this host. Vercel cannot run Socket.IO here. Set NEXT_PUBLIC_CRAWL_API_BASE (and optionally NEXT_PUBLIC_SOCKET_URL) to your Node deployment, or deploy the full app on Railway — see project.md.",
-        );
-      return;
-    }
 
     if (isPendingCrawl(id)) {
       useCrawlStore.setState({ crawlId: id, phase: "running" });
@@ -65,19 +54,14 @@ export default function CrawlDashboardPage() {
       useCrawlStore.getState().applyComplete(p);
     };
 
-    let connectErrorReported = false;
     const onConnectError = (err: Error) => {
-      if (connectErrorReported) return;
-      connectErrorReported = true;
       clearPendingCrawl();
-      socket.io.reconnection(false);
-      socket.disconnect();
       useCrawlStore
         .getState()
         .applyError(
           err?.message
             ? `Socket: ${err.message}`
-            : "Could not connect to live crawl server. Use npm run dev (tsx server.ts) or set NEXT_PUBLIC_CRAWL_API_BASE.",
+            : "Could not connect to live crawl server. Use npm run dev (tsx server.ts).",
         );
     };
 

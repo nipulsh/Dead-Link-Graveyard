@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  getCrawlPostUrl,
-  missingRealtimeBackendOnVercel,
-} from "@/lib/public-runtime";
+import { getCrawlPostUrl } from "@/lib/public-runtime";
 import { Search } from "lucide-react";
 import { markPendingCrawl } from "@/lib/crawl-session-flag";
 import { useRouter } from "next/navigation";
@@ -13,12 +10,6 @@ const Inputbar = () => {
   const router = useRouter();
   const [url, setUrl] = useState("");
   const handleCrawl = async (url: string) => {
-    if (missingRealtimeBackendOnVercel()) {
-      window.alert(
-        "This deployment cannot run crawls on its own. Add NEXT_PUBLIC_CRAWL_API_BASE (your Node + Socket.IO URL) in Vercel env, or host the full app on Railway. See project.md.",
-      );
-      return;
-    }
     const response = await fetch(getCrawlPostUrl(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },

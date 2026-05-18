@@ -18,20 +18,17 @@ const roboto = localFont({
   ],
   variable: "--font-roboto",
   display: "swap",
-  preload: false,
 });
 
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
   weight: ["400", "600", "700"],
-  preload: false,
 });
 
 const robotoMono = Roboto_Mono({
   variable: "--font-roboto-mono",
   subsets: ["latin"],
-  preload: false,
 });
 
 export const metadata: Metadata = {
