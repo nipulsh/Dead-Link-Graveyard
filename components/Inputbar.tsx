@@ -1,5 +1,6 @@
 "use client";
 
+import { getCrawlPostUrl } from "@/lib/public-runtime";
 import { Search } from "lucide-react";
 import { markPendingCrawl } from "@/lib/crawl-session-flag";
 import { useRouter } from "next/navigation";
@@ -9,7 +10,7 @@ const Inputbar = () => {
   const router = useRouter();
   const [url, setUrl] = useState("");
   const handleCrawl = async (url: string) => {
-    const response = await fetch("/api/crawl", {
+    const response = await fetch(getCrawlPostUrl(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url }),

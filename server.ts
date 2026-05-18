@@ -12,6 +12,13 @@ const dev = process.env.NODE_ENV !== "production";
 const hostname = process.env.HOSTNAME ?? "localhost";
 const port = Number.parseInt(process.env.PORT ?? "3000", 10);
 
+const allowList = process.env.SOCKET_CORS_ORIGIN?.split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+const corsOrigin: boolean | string[] =
+  dev ? true : allowList && allowList.length > 0 ? allowList : true;
+
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
@@ -24,7 +31,7 @@ void app.prepare().then(() => {
   const io = new Server(httpServer, {
     path: "/api/socket",
     addTrailingSlash: false,
-    cors: { origin: dev ? true : false },
+    cors: { origin: corsOrigin },
   });
 
   setSocketIOServer(io);
