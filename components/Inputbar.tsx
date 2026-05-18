@@ -4,7 +4,6 @@ import {
   getCrawlPostUrl,
   missingRealtimeBackendOnVercel,
 } from "@/lib/public-runtime";
-import { VERCEL_MISSING_BACKEND_MESSAGE } from "@/lib/deploy-help";
 import { Search } from "lucide-react";
 import { markPendingCrawl } from "@/lib/crawl-session-flag";
 import { useRouter } from "next/navigation";
@@ -13,10 +12,13 @@ import React, { useState } from "react";
 const Inputbar = () => {
   const router = useRouter();
   const [url, setUrl] = useState("");
-  const vercelNeedsBackend = missingRealtimeBackendOnVercel();
-
   const handleCrawl = async (url: string) => {
-    if (vercelNeedsBackend) return;
+    if (missingRealtimeBackendOnVercel()) {
+      window.alert(
+        "This deployment cannot run crawls on its own. Add NEXT_PUBLIC_CRAWL_API_BASE (your Node + Socket.IO URL) in Vercel env, or host the full app on Railway. See project.md.",
+      );
+      return;
+    }
     const response = await fetch(getCrawlPostUrl(), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -43,19 +45,9 @@ const Inputbar = () => {
     return;
   };
   return (
-    <div className="relative bottom-20 mx-auto max-w-[min(30vw,520px)] px-4">
-      {vercelNeedsBackend ? (
-        <div
-          role="status"
-          className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-left text-sm leading-relaxed text-amber-950"
-        >
-          {VERCEL_MISSING_BACKEND_MESSAGE}
-        </div>
-      ) : null}
+    <div className="relative bottom-20">
       <div className="mb-20 text-center text-4xl">Enter the website link</div>
-      <div
-        className={`bg-[#FFFEFE] h-content shadow-2xs gap-5 p-4 flex justify-between items-center w-full max-w-full rounded-2xl overflow-hidden ${vercelNeedsBackend ? "pointer-events-none opacity-60" : ""}`}
-      >
+      <div className="bg-[#FFFEFE] h-content shadow-2xs gap-5 p-4 flex justify-between items-center w-[30vw] rounded-2xl overflow-hidden">
         <div className="text-[#848497]">
           <Search />
         </div>

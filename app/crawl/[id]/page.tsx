@@ -3,11 +3,7 @@
 import Graph from "@/components/crawl/Graph";
 import Header from "@/components/crawl/Header";
 import Navbar from "@/components/crawl/Navbar";
-import {
-  clearPendingCrawl,
-  isPendingCrawl,
-} from "@/lib/crawl-session-flag";
-import { VERCEL_MISSING_BACKEND_MESSAGE } from "@/lib/deploy-help";
+import { clearPendingCrawl, isPendingCrawl } from "@/lib/crawl-session-flag";
 import { missingRealtimeBackendOnVercel } from "@/lib/public-runtime";
 import { getSocket } from "@/lib/socket-client";
 import { SOCKET_EVENTS } from "@/types/socket-events";
@@ -31,7 +27,11 @@ export default function CrawlDashboardPage() {
 
     if (missingRealtimeBackendOnVercel()) {
       clearPendingCrawl();
-      useCrawlStore.getState().applyError(VERCEL_MISSING_BACKEND_MESSAGE);
+      useCrawlStore
+        .getState()
+        .applyError(
+          "Live crawl is not available on this host. Vercel cannot run Socket.IO here. Set NEXT_PUBLIC_CRAWL_API_BASE (and optionally NEXT_PUBLIC_SOCKET_URL) to your Node deployment, or deploy the full app on Railway — see project.md.",
+        );
       return;
     }
 
