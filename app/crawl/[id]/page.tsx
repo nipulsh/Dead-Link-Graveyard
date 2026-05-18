@@ -8,10 +8,10 @@ const page = () => {
       <div className="min-h-0 flex-1 overflow-auto">
         <Navbar />
       </div>
-      <div className="min-h-0 flex-[1] overflow-auto">
+      <div className="min-h-0 flex-1 overflow-auto">
         <Header />
       </div>
-      <div className="min-h-0 flex-[9] overflow-hidden">
+      <div className="min-h-0 flex-9 overflow-hidden">
         <Graph />
       </div>
     </div>
