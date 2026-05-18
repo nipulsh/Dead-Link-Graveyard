@@ -1,112 +1,70 @@
-import { cn } from "@/lib/utils";
-import React from "react";
+"use client";
 
-const CrawlInformation = () => {
-  const informationFields = {
-    "pages founded": {
-      name: "pages founded",
-      value: 0,
-      color: "black",
-    },
-    "pages crawled": {
-      name: "pages crawled",
-      value: 0,
-      color: "black",
-    },
-  };
-  const errorFields = [
-    {
-      name: "200 ok",
-      value: 0,
-      color: "green",
-    },
-    {
-      name: "404 errors",
-      value: 0,
-      color: "red",
-    },
-    {
-      name: "5xx errors",
-      value: 0,
-      color: "red",
-    },
+import { cn } from "@/lib/utils";
+import { useShallow } from "zustand/shallow";
+import { useCrawlStore } from "@/store/useCrawlStore";
+
+export default function CrawlInformation() {
+  const { stats, activity } = useCrawlStore(
+    useShallow((s) => ({
+      stats: s.stats,
+      activity: s.activity,
+    })),
+  );
+
+  const rows = [
+    { label: "Total found", value: stats.totalFound },
+    { label: "Pages crawled", value: stats.totalPagesCrawled },
+    { label: "2xx", value: stats.ok2xx, className: "text-emerald-600" },
+    { label: "404", value: stats.notFound404, className: "text-red-600" },
+    { label: "5xx", value: stats.serverError5xx, className: "text-orange-600" },
+    { label: "Redirects", value: stats.redirects3xx, className: "text-amber-600" },
   ];
-  const liveActivityFeed = [
-    {
-      name: "Page 1",
-      value: 0,
-      color: "black",
-    },
-    {
-      name: "Page 2",
-      value: 0,
-      color: "black",
-    },
-    {
-      name: "Page 3",
-      value: 0,
-      color: "black",
-    },
-  ];
+
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-col gap-2 border-1 border-[#E0E0E0] rounded-md p-2">
-        <ul className="flex flex-col gap-2 border-b-1 border-[#E0E0E0] pb-2">
-          {Object.values(informationFields).map((field, index) => {
-            return (
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
+      <section className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
+        <h2 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          Snapshot
+        </h2>
+        <ul className="space-y-1.5 text-sm">
+          {rows.map((r) => (
+            <li key={r.label} className="flex justify-between gap-2">
+              <span className="text-slate-600">{r.label}</span>
+              <span
+                className={cn("font-mono tabular-nums text-slate-900", r.className)}
+              >
+                {r.value}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <h2 className="shrink-0 border-b border-slate-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+          Live activity
+        </h2>
+        <ul className="min-h-0 flex-1 space-y-1 overflow-y-auto px-2 py-2 text-xs">
+          {activity.length === 0 ? (
+            <li className="text-slate-400">Waiting for events…</li>
+          ) : (
+            activity.map((item) => (
               <li
-                key={index}
+                key={item.id}
                 className={cn(
-                  "flex justify-between items-center",
-                  field.color === "green"
-                    ? "text-green-500"
-                    : field.color === "red"
-                      ? "text-red-500"
-                      : "text-black",
+                  "rounded-md px-2 py-1 font-mono leading-snug text-slate-700",
+                  item.tone === "error" && "bg-red-50 text-red-800",
+                  item.tone === "success" && "bg-emerald-50 text-emerald-900",
+                  item.tone === "warn" && "bg-amber-50 text-amber-900",
+                  item.tone === "info" && "bg-slate-50",
                 )}
               >
-                <span>{field.name}</span>
-                <span>{field.value}</span>
+                {item.message}
               </li>
-            );
-          })}
+            ))
+          )}
         </ul>
-        <ul>
-          {errorFields.map((field, index) => {
-            return (
-              <li
-                key={index}
-                className={cn(
-                  "flex justify-between items-center",
-                  field.color === "green"
-                    ? "text-green-500"
-                    : field.color === "red"
-                      ? "text-red-500"
-                      : "text-black",
-                )}
-              >
-                <span>{field.name}</span>
-                <span>{field.value}</span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-      <div className="flex flex-col gap-2 border-1 border-[#E0E0E0] rounded-md p-2">
-        <div>Live activity feed</div>
-        <ul>
-          {liveActivityFeed.map((item, index) => {
-            return (
-              <li key={index}>
-                <span>{item.name}</span>
-                <span>{item.value}</span>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+      </section>
     </div>
   );
-};
-
-export default CrawlInformation;
+}

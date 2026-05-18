@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { markPendingCrawl } from "@/lib/crawl-session-flag";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -10,10 +11,20 @@ const Inputbar = () => {
   const handleCrawl = async (url: string) => {
     const response = await fetch("/api/crawl", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url }),
     });
-    const data = await response.json();
-    if (data.success) {
+    const data = (await response.json()) as {
+      success?: boolean;
+      crawlId?: string;
+      error?: string;
+    };
+    if (!response.ok) {
+      console.error(data.error ?? "Crawl request failed");
+      return;
+    }
+    if (data.success && data.crawlId) {
+      markPendingCrawl(data.crawlId);
       router.push(`/crawl/${data.crawlId}`);
     }
   };
